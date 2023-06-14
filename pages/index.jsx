@@ -1,4 +1,3 @@
-import Layout from "../components/layout/Layout";
 import MeetupList from "../components/meetups/MeetupList";
 
 const MEETUPS = [
@@ -28,12 +27,27 @@ const MEETUPS = [
   },
 ];
 
-function HomePage() {
-  return (
-    <Layout>
-      <MeetupList meetups={MEETUPS} />
-    </Layout>
-  );
+function HomePage(props) {
+  return <MeetupList meetups={props.meetups} />;
+}
+
+// export async function getServerSideProps(context){
+//   const req = context.req;
+//   const res = context.res;
+//   return {
+//     props: {
+//       meetups: MEETUPS
+//     }
+//   }
+// }
+
+export async function getStaticProps() {
+  return {
+    props: {
+      meetups: MEETUPS,
+    },
+    revalidate: 10,
+  };
 }
 
 export default HomePage;
