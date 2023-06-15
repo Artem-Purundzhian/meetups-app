@@ -1,21 +1,29 @@
-import MeetupDetail from "../../components/meetups/MeetupDetail";
 import { getMeetup, getPaths } from "../api/new-meetup";
+import Head from 'next/head';
+
+import MeetupDetail from "../../components/meetups/MeetupDetail";
 
 export default function MeetupDetails(props) {
   return (
-    <MeetupDetail
-      image={props.meetupData.image}
-      title={props.meetupData.title}
-      address={props.meetupData.address}
-      description={props.meetupData.description}
-    />
+    <>
+      <Head>
+        <title>{props.meetupData.title}</title>
+        <meta name="description" content={props.meetupData.description} />
+      </Head>
+      <MeetupDetail
+        image={props.meetupData.image}
+        title={props.meetupData.title}
+        address={props.meetupData.address}
+        description={props.meetupData.description}
+      />
+    </>
   );
 }
 
 export async function getStaticPaths() {
   const meetups = await getPaths();
   return {
-    fallback: false,
+    fallback: 'blocking',
     paths: meetups.map((meetup) => ({
       params: {
         meetupId: meetup._id.toString(),
@@ -34,7 +42,7 @@ export async function getStaticProps(context) {
         id: selectedMeetup._id.toString(),
         title: selectedMeetup.data.title,
         image: selectedMeetup.data.image,
-        description: selectedMeetup.data.description
+        description: selectedMeetup.data.description,
       },
     },
   };
